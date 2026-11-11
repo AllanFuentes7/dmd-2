@@ -1,0 +1,13 @@
+/* Pregunta (b): territorios más rentables, Internet frente a Reseller.
+   Utilidad = SalesAmount - TotalProductCost (cálculo con nombre en la vista). */
+
+WITH MEMBER [Measures].[Utilidad Total] AS
+  [Measures].[Utilidad] + [Measures].[Utilidad - Fact Reseller Sales]
+SELECT
+  { [Measures].[Utilidad],
+    [Measures].[Utilidad - Fact Reseller Sales],
+    [Measures].[Utilidad Total] } ON COLUMNS,
+  NON EMPTY
+  ORDER( [Territorio].[Territorio].[Sales Territory Region].Members,
+         [Measures].[Utilidad Total], BDESC ) ON ROWS
+FROM [cubo Adventureworks]

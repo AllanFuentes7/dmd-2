@@ -1,0 +1,11 @@
+/* Pregunta (a): ventas por categoría y subcategoría, por año y trimestre.
+   Ventas Totales = Internet + Reseller. */
+
+WITH MEMBER [Measures].[Ventas Totales] AS
+  [Measures].[Sales Amount] + [Measures].[Sales Amount - Fact Reseller Sales]
+SELECT
+  { [Measures].[Ventas Totales] } ON COLUMNS,
+  NON EMPTY
+  { [Producto].[Producto].[English Product Subcategory Name].Members }
+  * { [Order Date].[Año-Trimestre].[Calendar Quarter].Members } ON ROWS
+FROM [cubo Adventureworks]

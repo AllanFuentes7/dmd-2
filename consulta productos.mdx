@@ -1,0 +1,12 @@
+/* Pregunta (c): 10 productos más rentables y su utilidad por año y trimestre.
+   El top 10 se calcula sobre el total de todos los años. */
+
+WITH MEMBER [Measures].[Utilidad Total] AS
+  [Measures].[Utilidad] + [Measures].[Utilidad - Fact Reseller Sales]
+SET [Top10] AS
+  TOPCOUNT( [Producto].[Producto].[English Product Name].Members,
+            10, [Measures].[Utilidad Total] )
+SELECT
+  { [Measures].[Utilidad Total] } ON COLUMNS,
+  NON EMPTY [Top10] * [Order Date].[Año-Trimestre].[Calendar Quarter].Members ON ROWS
+FROM [cubo Adventureworks]
